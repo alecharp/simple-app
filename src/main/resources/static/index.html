@@ -21,13 +21,37 @@
   ~ THE SOFTWARE.
   -->
 
-<html lang="en">
+<html lang="en" data-ng-app="simpleApp">
 <head>
   <meta charset="UTF-8">
   <title>Simple Application</title>
+
+  <link rel="stylesheet" href="/webjars/bootstrap/4.0.0-alpha.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <script type="text/javascript" src="/webjars/angular/1.5.3/angular.min.js"></script>
+
+  <script type="text/javascript" src="/app/index.js"></script>
 </head>
 <body>
 
-<h1>Hello World!</h1>
+<div class="container" data-ng-controller="GravatarCtrl as ctrl">
+  <div class="header clearfix">
+    <nav class="navbar navbar-light bg-faded">
+      <a class="navbar-brand" href="/">Simple Application - Devoxx 2016</a>
+      <form novalidate class="form-inline pull-xs-right" data-ng-submit="ctrl.fetch(email)">
+        <input class="form-control" type="email" data-ng-model="email" placeholder="Email"
+               data-ng-required required="required" autofocus="autofocus">
+        <button class="btn btn-success-outline" type="submit" data-ng-disabled>Get image</button>
+      </form>
+    </nav>
+  </div>
+
+  <div class="jumbotron" data-ng-show="ctrl.url">
+    <p class="lead">
+      <img src="" data-ng-src="{{ctrl.url}}"/>
+    </p>
+  </div>
+</div>
+
 </body>
 </html>
