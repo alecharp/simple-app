@@ -23,21 +23,37 @@
 package fr.alecharp.simpleapp;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(Parameterized.class)
 public class HashServiceTest {
+
+    @Parameterized.Parameters(name = "{index}: md5({0}) = {1}")
+    public static Collection<String[]> data() throws IOException {
+        return Files.readAllLines(Paths.get("src/test/resources/md5-listing.txt")).stream()
+            .map(line -> line.split(":"))
+            .collect(Collectors.toList());
+    }
+
+    private String input, expected;
+
+    public HashServiceTest(String input, String expected) {
+        this.input = input;
+        this.expected = expected;
+    }
 
     @Test
     public void shouldBeAbleToGenerateACorrectMD5Hash() throws IOException {
         HashService hashService = new HashService();
-
-        Files.readAllLines(Paths.get("src/test/resources/md5-listing.txt")).stream()
-            .map(line -> line.split(":"))
-            .forEach(couple -> assertThat(hashService.md5(couple[0])).isEqualTo(couple[1]));
+        assertThat(hashService.md5(input)).isEqualTo(expected);
     }
 }
