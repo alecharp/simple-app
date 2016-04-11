@@ -24,7 +24,9 @@ package fr.alecharp.simpleapp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -32,7 +34,11 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Server.class)
+@WebIntegrationTest(randomPort = true)
 public class GravatarHttpControllerIT {
+
+    @Value("${local.server.port}")
+    int port;
 
     @Test
     public void shouldBeAbleToGetImageURIForEmail() {
@@ -40,6 +46,7 @@ public class GravatarHttpControllerIT {
         String expected = "4276d24c5065404aa80586c4a8b275f4";
 
         given().
+            port(port).
             param("email", input).
         when().
             get("/api/img").
@@ -54,6 +61,7 @@ public class GravatarHttpControllerIT {
         String size = "1024";
 
         given().
+            port(port).
             param("email", input).
             param("size", size).
         when().
