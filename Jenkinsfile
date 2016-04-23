@@ -18,10 +18,10 @@ node {
     step([$class: 'JUnitResultArchiver', testResults: 'target/failsafe-reports/*.xml'])
 
     dir('target') {
-        archive "*.${pom.getPackaging()}"
+        archive "${pom.getArtifactId()}.${pom.getPackaging()}"
     }
 
-    stash name: 'binary', includes: "target/*.${pom.getPackaging()}"
+    stash name: 'binary', includes: "target/${pom.getArtifactId()}.${pom.getPackaging()}"
     dir('src/main/docker') {
         stash name: 'dockerfile', includes: 'Dockerfile'
     }

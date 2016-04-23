@@ -12,4 +12,4 @@ WORKDIR /var/lib/simple-app
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "simple-app.jar"]
 
-ADD target/simple-app-*.jar simple-app.jar
+ADD target/simple-app.jar simple-app.jar
