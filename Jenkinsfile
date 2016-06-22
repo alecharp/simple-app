@@ -2,8 +2,8 @@ node {
     stage 'Checkout'
     checkout scm
 
-    sh 'git rev-parse HEAD > GIT_COMMIT'
-    short_commit = readFile('GIT_COMMIT').trim().take(7)
+    sh 'git rev-parse --short HEAD > GIT_COMMIT'
+    short_commit = readFile('GIT_COMMIT').trim()
     sh 'rm GIT_COMMIT'
 
     def pom = readMavenPom file:'pom.xml'
