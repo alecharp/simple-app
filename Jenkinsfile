@@ -1,5 +1,9 @@
 #!groovy
 
+properties([
+  [$class: 'GithubProjectProperty', displayName: 'Simple App', projectUrlStr: 'https://github.com/alecharp/simple-app/'], 
+])
+
 node {
   stage('Checkout') {
     checkout scm
