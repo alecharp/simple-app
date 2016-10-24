@@ -1,5 +1,10 @@
 #!groovy
 
+properties([
+  [$class: 'GithubProjectProperty', displayName: 'Simple Application', projectUrlStr: 'https://github.com/alecharp/simple-app/'],
+  buildDiscarder(logRotator(artifactNumToKeepStr: '5', daysToKeepStr: '15'))
+])
+
 docker.image('alecharp/java-build-tools:7a7e8f9').inside {
   stage('Checkout') {
     checkout scm
@@ -16,13 +21,13 @@ docker.image('alecharp/java-build-tools:7a7e8f9').inside {
 }
 
 stage('Tests') {
-  parallel 'UnitTests': {
+  parallel 'Unit tests': {
     docker.image('alecharp/java-build-tools:7a7e8f9').inside {
       unstash 'project'
       sh 'mvn clean test'
       junit 'target/surefire-reports/*.xml'
     }
-  }, 'IntegrationTests': {
+  }, 'Integration tests': {
     docker.image('alecharp/java-build-tools:7a7e8f9').inside {
       unstash 'project'
       sh 'mvn clean test-compile failsafe:integration-test'
@@ -31,28 +36,28 @@ stage('Tests') {
   }
 }
 
-node {
-  stage('Build Docker img') {
+
+stage('Build Docker img') {
+  node {
     unstash 'docker'
     image = docker.build("alecharp/simple-app:${short_commit}", '-f src/main/docker/Dockerfile .')
   }
 }
 
-node {
-  stage('Validate Docker img') {
+stage('Validate Docker img') {
+  node {
     container = image.run('-P')
     ip = container.port(8080)
   }
+  try {
+    input message: "Is http://${ip} ok?", ok: 'Publish'
+  } finally {
+    node { container.stop() }
+  }
 }
 
-try {
-  input message: "Is http://${ip} ok?", ok: 'Publish'
-} finally {
-  node { container.stop() }
-}
-
-node {
-  stage('Publish Docker img') {
+stage('Publish Docker img') {
+  node {
     docker.withRegistry('http://localhost:5000') {
       image.push "${short_commit}"
     }
