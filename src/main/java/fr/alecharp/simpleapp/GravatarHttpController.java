@@ -46,7 +46,7 @@ public final class GravatarHttpController {
     @RequestMapping(value = "/api/img")
     public String getImage(@RequestParam(required = false) String email,
                            @RequestParam(defaultValue = "450", required = false) String size) {
-        LOG.debug("Fetch image for {} in {}", email, size);
+        LOG.debug("Image URL for {}", email, size);
         return String.format("%s%s?s=%s&r=g", GRAVATAR_URL, hashService.md5(email), size);
     }
 }

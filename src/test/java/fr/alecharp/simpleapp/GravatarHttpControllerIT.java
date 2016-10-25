@@ -25,16 +25,14 @@ package fr.alecharp.simpleapp;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(Server.class)
-@WebIntegrationTest(randomPort = true)
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GravatarHttpControllerIT {
 
     @Value("${local.server.port}")
@@ -44,6 +42,7 @@ public class GravatarHttpControllerIT {
     public void shouldBeAbleToGetImageURIForEmail() {
         String input = "me@alecharp.fr";
         String expected = "4276d24c5065404aa80586c4a8b275f4";
+        int defaultSize = 450;
 
         given().
             port(port).
@@ -51,14 +50,15 @@ public class GravatarHttpControllerIT {
         when().
             get("/api/img").
         then().
-            content(containsString(expected));
+            content(containsString(expected)).
+            content(containsString("s=" + defaultSize));
     }
 
     @Test
     public void shouldBeAbleToTweakImageSize() {
         String input = "me@alecharp.fr";
         String expected = "4276d24c5065404aa80586c4a8b275f4";
-        String size = "1024";
+        int size = 1024;
 
         given().
             port(port).

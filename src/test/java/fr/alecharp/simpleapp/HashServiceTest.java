@@ -54,6 +54,6 @@ public class HashServiceTest {
     @Test
     public void shouldBeAbleToGenerateACorrectMD5Hash() throws IOException {
         HashService hashService = new HashService();
-        assertThat(hashService.md5(input)).isEqualTo(expected);
+        assertThat(hashService.md5(input)).as("Validating MD5 HASH for %s", input).isEqualTo(expected);
     }
 }
