@@ -87,14 +87,19 @@
 
     <!-- UI -->
     <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>webjars-locator</artifactId>
+      <version>0.32</version>
+    </dependency>
+    <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>angular</artifactId>
-      <version>1.5.3</version>
+      <version>1.5.8</version>
     </dependency>
     <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>bootstrap</artifactId>
-      <version>4.0.0-alpha.2</version>
+      <version>4.0.0-alpha.4</version>
     </dependency>
 
     <!-- Tests -->
