@@ -59,6 +59,7 @@ stage('Publish Docker img') {
   node {
     docker.withRegistry('http://localhost:5000') {
       image.push "${commit}"
+      milestone label: 'docker-image-latest'
       image.push "latest"
     }
   }
