@@ -1,5 +1,10 @@
 #!groovy
 
+properties([
+  [$class: 'GithubProjectProperty', displayName: 'Simple Application', projectUrlStr: 'https://github.com/alecharp/simple-app/'],
+  buildDiscarder(logRotator(artifactNumToKeepStr: '5', daysToKeepStr: '15'))
+])
+
 node {
   stage('Checkout') {
     checkout scm
