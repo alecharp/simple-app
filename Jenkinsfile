@@ -8,8 +8,24 @@ node {
   }
 
   stage('Build') {
-    mvn('clean package -Dmaven.test.skip=true')
+    mvn 'clean package -Dmaven.test.skip=true'
     archiveArtifacts 'target/*.jar'
+  }
+}
+
+stage('Tests') {
+  parallel 'Unit tests': {
+    node {
+      checkout scm
+      mvn 'clean test'
+      junit 'target/surefire-reports/*.xml'
+    }
+  }, 'Integration tests': {
+    node {
+      checkout scm
+      mvn 'clean test-compile failsafe:integration-test'
+      junit 'target/failsafe-reports/*.xml'
+    }
   }
 }
 
