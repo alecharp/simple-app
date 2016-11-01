@@ -1,4 +1,4 @@
-FROM java:8-jre-alpine
+FROM openjdk:8-jre-alpine
 MAINTAINER Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
 
 RUN adduser \
