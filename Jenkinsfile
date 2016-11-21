@@ -10,6 +10,7 @@ docker.image(dockerImageBuild).inside {
   stage('Checkout') {
     checkout scm
     short_commit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+    currentBranch = sh(script: 'git rev-parse --abbrev-rev HEAD', returnStdout: true).trim()
     currentBuild.description = "#${short_commit}"
   }
 
@@ -61,6 +62,24 @@ stage('Publish Docker img') {
       image.push "${short_commit}"
       milestone label: 'docker-push-latest'
       image.push "latest"
+    }
+  }
+}
+
+if ('master'.equals(currentBranch)) {
+  stage('Release') {
+    milestone label: 'release only the latest build'
+    def release = input message: 'Choose release parameters', ok: 'Done',
+      parameters: [
+        string(defaultValue: '', description: 'Version for the release', name: 'version'),
+        string(defaultValue: '', description: 'Next development version', name: 'nextVersion')
+      ]
+    docker.image(dockerBuildImage).inside('-v /Users/adrien/.m2:/home/build/.m2') {
+      checkout scm
+      sh 'git config user.name Jenkins && git config user.email no-mail@example.com'
+      sh "mvn clean release:prepare release:perform -B" +
+        (release?.version?.trim() ? " -DreleaseVersion=" + release.version : '') +
+        (release?.nextVersion?.trim() ? " -DdevelopmentVersion=" + release.nextVersion : '')
     }
   }
 }
