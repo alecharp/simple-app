@@ -1,4 +1,4 @@
-#!groovy
+#!/usr/bin/env groovy
 
 properties([
   [$class: 'GithubProjectProperty', displayName: 'Simple Application', projectUrlStr: 'https://github.com/alecharp/simple-app/'],
