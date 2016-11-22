@@ -26,13 +26,13 @@ stage('Tests') {
     docker.image(dockerImageBuild).inside {
       checkout scm
       sh 'mvn clean test'
-      junit 'target/surefire-reports/*.xml'
+      junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
     }
   }, 'Integration tests': {
     docker.image(dockerImageBuild).inside {
       checkout scm
       sh 'mvn clean test-compile failsafe:integration-test'
-      junit 'target/failsafe-reports/*.xml'
+      junit allowEmptyResults: true, testResults: 'target/failsafe-reports/*.xml'
     }
   }
 }
