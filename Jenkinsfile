@@ -18,7 +18,7 @@ docker.image(dockerImageBuild).inside {
     sh 'mvn clean package -Dmaven.test.skip=true'
     archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
     stash name: 'docker', includes: 'src/main/docker/Dockerfile, target/*.jar'
-    step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build']])
+    step([$class: 'GitHubCommitStatusSetter', statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'BetterThanOrEqualBuildResult', message: 'Build passsed', result: 'SUCCESS', state: 'SUCCESS']]]])
   }
 }
 
@@ -28,15 +28,16 @@ stage('Tests') {
       checkout scm
       sh 'mvn clean test'
       junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml'
+      step([$class: 'GitHubCommitStatusSetter', statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'BetterThanOrEqualBuildResult', message: 'Unit tests passsed', result: 'SUCCESS', state: 'SUCCESS']]]])
     }
   }, 'Integration tests': {
     docker.image(dockerImageBuild).inside {
       checkout scm
       sh 'mvn clean test-compile failsafe:integration-test'
       junit allowEmptyResults: true, testResults: 'target/failsafe-reports/*.xml'
+      step([$class: 'GitHubCommitStatusSetter', statusResultSource: [$class: 'ConditionalStatusResultSource', results: [[$class: 'BetterThanOrEqualBuildResult', message: 'Integration tests passsed', result: 'SUCCESS', state: 'SUCCESS']]]])
     }
   }
-  step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Tests']])
 }
 
 stage('Build Docker img') {
