@@ -18,6 +18,7 @@ docker.image(dockerImageBuild).inside {
     sh 'mvn clean package -Dmaven.test.skip=true'
     archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
     stash name: 'docker', includes: 'src/main/docker/Dockerfile, target/*.jar'
+    step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Build']])
   }
 }
 
@@ -35,6 +36,7 @@ stage('Tests') {
       junit allowEmptyResults: true, testResults: 'target/failsafe-reports/*.xml'
     }
   }
+  step([$class: 'GitHubCommitStatusSetter', contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: 'Tests']])
 }
 
 stage('Build Docker img') {
