@@ -70,6 +70,16 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <!-- 
+          Required to fix CVE on org.apache.commons:commons-compress:jar:1.9
+          until 2.2.0 of Spring-Boot is released.
+          See https://app.snyk.io/vuln/SNYK-JAVA-ORGAPACHECOMMONS-32473.
+        -->
+        <groupId>org.webjars</groupId>
+        <artifactId>webjars-locator-core</artifactId>
+        <version>0.37</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
