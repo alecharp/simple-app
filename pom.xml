@@ -58,7 +58,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
 
-    <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
   </properties>
 
   <dependencyManagement>
@@ -89,17 +89,17 @@
     <dependency>
       <groupId>org.webjars</groupId>
       <artifactId>webjars-locator</artifactId>
-      <version>0.32</version>
+      <version>0.36</version>
     </dependency>
     <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>angular</artifactId>
-      <version>1.5.8</version>
+      <version>1.7.8</version>
     </dependency>
     <dependency>
       <groupId>org.webjars.npm</groupId>
       <artifactId>bootstrap</artifactId>
-      <version>4.0.0-alpha.4</version>
+      <version>4.3.1</version>
     </dependency>
 
     <!-- Tests -->
@@ -117,7 +117,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.4.0</version>
+      <version>3.12.2</version>
     </dependency>
     <dependency>
       <groupId>com.jayway.restassured</groupId>
