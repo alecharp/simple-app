@@ -1,5 +1,5 @@
 FROM openjdk:8-jre-alpine
-MAINTAINER Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
+LABEL maintainer="Adrien Lecharpentier <adrien.lecharpentier@gmail.com>"
 
 RUN adduser \
   -h /var/lib/simple-app \
@@ -12,4 +12,4 @@ WORKDIR /var/lib/simple-app
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "simple-app.jar"]
 
-ADD target/simple-app-*.jar simple-app.jar
+COPY --chown=simpleapp:simpleapp target/simple-app.jar simple-app.jar
