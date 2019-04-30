@@ -10,7 +10,7 @@ docker.image(dockerImageBuild).inside {
   stage('Checkout') {
     checkout scm
     short_commit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-    currentBranch = sh(script: 'git rev-parse --abbrev-rev HEAD', returnStdout: true).trim()
+    currentBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
     currentBuild.description = "#${short_commit}"
   }
 
