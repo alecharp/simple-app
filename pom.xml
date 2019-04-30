@@ -29,7 +29,8 @@
   <version>0.1-SNAPSHOT</version>
 
   <name>Simple Application</name>
-
+  <inceptionYear>2016</inceptionYear>
+  
   <licenses>
     <license>
       <name>MIT License</name>
